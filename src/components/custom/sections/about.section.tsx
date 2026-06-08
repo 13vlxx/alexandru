@@ -91,6 +91,7 @@ export const AboutSection = () => {
 
 	return (
 		<section
+			id="about"
 			ref={sectionRef}
 			className="relative overflow-hidden bg-background"
 		>
@@ -102,9 +103,6 @@ export const AboutSection = () => {
 				<div className="mb-16 flex items-end justify-between">
 					<span className="text-xs font-semibold uppercase tracking-[0.22em] text-white/30">
 						01 / About
-					</span>
-					<span className="text-xs font-medium text-white/15">
-						Rusescu Alexandru
 					</span>
 				</div>
 

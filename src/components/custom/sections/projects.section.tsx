@@ -93,6 +93,7 @@ export const ProjectsSection = () => {
 
 	return (
 		<section
+			id="projects"
 			ref={sectionRef}
 			className="relative overflow-hidden bg-background"
 		>
@@ -146,71 +147,60 @@ export const ProjectsSection = () => {
 				</div>
 
 				{/* project list */}
-				<div ref={listRef}>
+				<div ref={listRef} className="flex flex-col gap-px">
 					{projects.map((p) => (
 						<a
 							key={p.id}
 							href={p.href}
-							className="project-row group block border-t border-white/[0.07] transition-colors duration-200 hover:border-white/[0.18]"
+							className="project-row group grid grid-cols-1 gap-4 border-t border-white/[0.07] py-8 transition-colors duration-200 hover:border-white/[0.15] md:grid-cols-[auto_1fr_auto] md:gap-12"
 						>
-							{/* header row */}
-							<div className="flex items-center gap-4 py-5">
-								<span
-									className="w-7 shrink-0 text-sm font-bold text-white/20 transition-colors duration-200 group-hover:text-white/40"
+							{/* number */}
+							<span
+								className="text-xs font-bold text-white/20 md:w-8 md:pt-1"
+								style={{ fontFamily: "Fraunces, Georgia, serif" }}
+							>
+								{p.id}
+							</span>
+
+							{/* name + description + stack */}
+							<div className="space-y-3">
+								<h3
+									className="text-lg font-bold leading-tight text-white/80 transition-colors duration-200 group-hover:text-white md:text-xl"
 									style={{ fontFamily: "Fraunces, Georgia, serif" }}
 								>
-									{p.id}
-								</span>
-
-								<div className="min-w-0 flex-1">
-									<span
-										className="block text-lg font-bold leading-tight text-white/80 transition-colors duration-200 group-hover:text-white md:text-xl"
-										style={{ fontFamily: "Fraunces, Georgia, serif" }}
-									>
-										{p.name}
-									</span>
-									{/* role + year visible on mobile only */}
-									<span className="mt-0.5 block text-xs text-white/25 md:hidden">
-										{p.role} · {p.year}
-									</span>
+									{p.name}
+								</h3>
+								<p className="text-sm leading-relaxed text-white/40">
+									{p.description}
+								</p>
+								<div className="flex flex-wrap gap-2 pt-1">
+									{p.stack.map((tech) => (
+										<span
+											key={tech}
+											className="rounded-full border border-white/10 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-white/30"
+										>
+											{tech}
+										</span>
+									))}
 								</div>
-
-								<span className="hidden shrink-0 text-xs text-white/25 md:block">
-									{p.role} · {p.year}
-								</span>
-
-								<ArrowUpRight
-									size={15}
-									className="shrink-0 text-white/20 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white/60"
-								/>
 							</div>
 
-							{/* detail:
-                  mobile  → always visible (no grid trick)
-                  desktop → collapsed, expands on hover     */}
-							<div className="md:grid md:grid-rows-[0fr] md:transition-all md:duration-300 md:ease-in-out md:group-hover:grid-rows-[1fr]">
-								<div className="md:overflow-hidden">
-									<div className="flex flex-col gap-3 pb-5 pl-11 md:flex-row md:items-start md:gap-12 md:pb-6">
-										<p className="text-sm leading-relaxed text-white/45 md:max-w-md md:flex-1">
-											{p.description}
-										</p>
-										<div className="flex flex-wrap gap-2 md:justify-end">
-											{p.stack.map((tech) => (
-												<span
-													key={tech}
-													className="rounded-full border border-white/10 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-white/30"
-												>
-													{tech}
-												</span>
-											))}
-										</div>
-									</div>
+							{/* year + role + arrow */}
+							<div className="flex items-start justify-between gap-4 md:flex-col md:items-end">
+								<div className="text-right">
+									<p className="text-xs font-semibold text-white/25">
+										{p.year}
+									</p>
+									<p className="text-xs text-white/20">{p.role}</p>
 								</div>
+								<ArrowUpRight
+									size={15}
+									className="mt-0.5 shrink-0 text-white/20 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white/55 md:mt-auto"
+								/>
 							</div>
 						</a>
 					))}
 
-					{/* closing border */}
 					<div className="border-t border-white/[0.07]" />
 				</div>
 			</div>
