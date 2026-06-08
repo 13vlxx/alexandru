@@ -29,7 +29,6 @@ export const HeroSection = () => {
 				centerY={0}
 				zoom={0.9}
 			/>
-			<div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_60%,transparent_30%,rgba(0,0,0,0.45)_100%)]" />
 			<div className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-6 text-center">
 				<p
 					className="animate-fade-in text-xs font-semibold uppercase tracking-[0.22em] text-white/55"

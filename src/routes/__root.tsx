@@ -1,5 +1,6 @@
 import {
 	HeadContent,
+	Outlet,
 	Scripts,
 	createRootRouteWithContext,
 } from "@tanstack/react-router";
@@ -12,6 +13,7 @@ import appCss from "../styles.css?url";
 
 import type { QueryClient } from "@tanstack/react-query";
 import { Navbar } from "#/components/custom/_utils/navbar";
+import { NotFound } from "#/components/custom/_utils/not-found";
 
 interface MyRouterContext {
 	queryClient: QueryClient;
@@ -38,18 +40,19 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			},
 		],
 	}),
-	shellComponent: RootDocument,
+	component: RootDocument,
+	notFoundComponent: NotFound,
 });
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootDocument() {
 	return (
 		<html lang="en">
 			<head>
 				<HeadContent />
 			</head>
-			<body>
+			<body className="bg-[#5227FF]">
 				<Navbar />
-				{children}
+				<Outlet />
 				<TanStackDevtools
 					config={{
 						position: "bottom-right",
