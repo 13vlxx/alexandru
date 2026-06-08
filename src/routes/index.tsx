@@ -1,3 +1,4 @@
+import { AboutSection } from "#/components/custom/sections/about.section";
 import { HeroSection } from "#/components/custom/sections/hero.section";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -7,6 +8,7 @@ function Home() {
 	return (
 		<>
 			<HeroSection />
+			<AboutSection />
 		</>
 	);
 }
