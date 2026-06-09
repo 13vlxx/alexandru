@@ -30,7 +30,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				content: "width=device-width, initial-scale=1",
 			},
 			{
-				title: "TanStack Start Starter",
+				title: "Rusescu Alexandru | Portfolio",
 			},
 		],
 		links: [
@@ -49,6 +49,7 @@ function RootDocument() {
 		<html lang="en" className="scroll-smooth">
 			<head>
 				<HeadContent />
+				<link rel="stylesheet" href={appCss} />
 			</head>
 			<body className="bg-[#5227FF]">
 				<Navbar />
