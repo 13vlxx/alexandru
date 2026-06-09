@@ -49,7 +49,6 @@ function RootDocument() {
 		<html lang="en" className="scroll-smooth">
 			<head>
 				<HeadContent />
-				<link rel="stylesheet" href={appCss} />
 			</head>
 			<body className="bg-[#5227FF]">
 				<Navbar />

@@ -10,7 +10,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN bun run build
 
-FROM base AS runner
+FROM node:22-alpine AS runner
+WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=5173
 
@@ -20,4 +21,4 @@ COPY server.mjs ./
 
 EXPOSE 5173
 
-CMD ["bun", "run", "server.mjs"]
+CMD ["node", "server.mjs"]
