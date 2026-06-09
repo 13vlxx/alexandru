@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import type { QueryClient } from "@tanstack/react-query";
 import { Navbar } from "#/components/custom/_utils/navbar";
 import { NotFound } from "#/components/custom/_utils/not-found";
+import { Footer } from "#/components/custom/_utils/footer";
 
 interface MyRouterContext {
 	queryClient: QueryClient;
@@ -22,22 +23,50 @@ interface MyRouterContext {
 export const Route = createRootRouteWithContext<MyRouterContext>()({
 	head: () => ({
 		meta: [
+			{ charSet: "utf-8" },
+			{ name: "viewport", content: "width=device-width, initial-scale=1" },
+			{ title: "Rusescu Alexandru | Software Architect & Developer" },
 			{
-				charSet: "utf-8",
+				name: "description",
+				content:
+					"Software architect and full-stack developer specialising in scalable backend systems, modern frontend interfaces, mobile apps, and cloud infrastructure.",
+			},
+			{ name: "author", content: "Rusescu Alexandru" },
+			{
+				name: "keywords",
+				content:
+					"software architect, full-stack developer, React, Node.js, Go, TypeScript, Kubernetes, mobile, backend, frontend",
+			},
+			// Open Graph
+			{
+				property: "og:title",
+				content: "Rusescu Alexandru | Software Architect & Developer",
 			},
 			{
-				name: "viewport",
-				content: "width=device-width, initial-scale=1",
+				property: "og:description",
+				content:
+					"Software architect and full-stack developer specialising in scalable backend systems, modern frontend interfaces, mobile apps, and cloud infrastructure.",
+			},
+			{ property: "og:type", content: "website" },
+			{ property: "og:locale", content: "en_GB" },
+			// Twitter / X
+			{ name: "twitter:card", content: "summary_large_image" },
+			{
+				name: "twitter:title",
+				content: "Rusescu Alexandru | Software Architect & Developer",
 			},
 			{
-				title: "Rusescu Alexandru | Portfolio",
+				name: "twitter:description",
+				content:
+					"Software architect and full-stack developer specialising in scalable backend systems, modern frontend interfaces, mobile apps, and cloud infrastructure.",
 			},
+			// Misc
+			{ name: "robots", content: "index, follow" },
+			{ name: "theme-color", content: "#5227FF" },
 		],
 		links: [
-			{
-				rel: "stylesheet",
-				href: appCss,
-			},
+			{ rel: "stylesheet", href: appCss },
+			{ rel: "canonical", href: "https://vlxx.fr" },
 		],
 	}),
 	component: RootDocument,
@@ -53,6 +82,7 @@ function RootDocument() {
 			<body className="bg-[#5227FF]">
 				<Navbar />
 				<Outlet />
+				<Footer />
 				<TanStackDevtools
 					config={{
 						position: "bottom-right",

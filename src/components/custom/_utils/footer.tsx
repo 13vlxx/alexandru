@@ -1,5 +1,5 @@
 import { Github, Linkedin, Mail } from "lucide-react";
-import { GrainientBackground } from "./backgrounds/grainient.background";
+import { GrainientBackground } from "../backgrounds/grainient.background";
 
 export const Footer = () => {
 	const year = new Date().getFullYear();
