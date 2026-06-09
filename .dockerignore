@@ -1,5 +1,6 @@
-node_modules
-dist
-.git
-.gitignore
-*.md
+node_modules/
+dist/
+.vite/
+.git/
+.vscode/
+*.log

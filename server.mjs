@@ -1,21 +1,27 @@
 import { serve } from '@hono/node-server'
 import { serveStatic } from '@hono/node-server/serve-static'
 import { Hono } from 'hono'
-import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import handler from './dist/server/server.js'
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const clientRoot = join(__dirname, 'dist/client')
 
 const app = new Hono()
 
-app.use('/assets/*', serveStatic({ root: clientRoot }))
-app.use('/*', serveStatic({ root: clientRoot }))
+// Serve hashed assets with long-lived cache
+app.use('/assets/*', async (c, next) => {
+  await next()
+  c.res.headers.set('Cache-Control', 'public, max-age=31536000, immutable')
+})
+app.use('/assets/*', serveStatic({ root: './dist/client' }))
+app.use('/*', serveStatic({ root: './dist/client' }))
 
-app.all('*', (c) => handler.fetch(c.req.raw))
+// SSR handler — HTML must never be cached so asset hashes stay in sync
+app.all('*', async (c) => {
+  const res = await handler.fetch(c.req.raw)
+  const newRes = new Response(res.body, res)
+  newRes.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate')
+  return newRes
+})
 
-const port = Number(5173)
+const port = Number(process.env.PORT ?? 5173)
 
 serve({ fetch: app.fetch.bind(app), port }, (info) => {
   console.log(`Server listening on http://0.0.0.0:${info.port}`)

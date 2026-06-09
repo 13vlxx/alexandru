@@ -1,12 +1,12 @@
-FROM oven/bun:1-alpine AS base
+FROM oven/bun:1-alpine AS deps
 WORKDIR /app
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile --production
 
-FROM base AS deps
+FROM oven/bun:1-alpine AS builder
+WORKDIR /app
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
-
-FROM base AS builder
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN bun run build
 
@@ -15,8 +15,8 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=5173
 
-COPY --from=builder /app/dist ./dist
 COPY --from=deps /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
 COPY server.mjs ./
 
 EXPOSE 5173
