@@ -21,8 +21,8 @@ const stack = [
 ];
 
 const links = [
-	{ label: "GitHub", href: "https://github.com" },
-	{ label: "LinkedIn", href: "https://linkedin.com" },
+	{ label: "GitHub", href: "https://github.com/13vlxx" },
+	{ label: "LinkedIn", href: "https://fr.linkedin.com/in/arusescu" },
 	{ label: "Email", href: "mailto:alexmonac13@gmail.com" },
 ];
 
@@ -184,6 +184,8 @@ export const AboutSection = () => {
 								<a
 									key={label}
 									href={href}
+									target="_blank"
+									rel="noopener noreferrer"
 									className="anim group flex items-center justify-between border-b border-white/[0.06] py-3 first:pt-0 last:border-0"
 								>
 									<span className="text-sm font-medium text-white/45 transition-colors duration-200 group-hover:text-white">

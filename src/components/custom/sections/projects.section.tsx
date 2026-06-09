@@ -9,43 +9,33 @@ gsap.registerPlugin(ScrollTrigger);
 const projects = [
 	{
 		id: "01",
-		name: "Distributed Task Queue",
-		year: "2024",
-		role: "Lead Architect",
+		name: "OreusAI",
+		year: "2026",
+		role: "Backend Developer",
 		description:
-			"High-throughput job processing system capable of handling 1M+ events per day with guaranteed delivery, dead letter queuing, and horizontal scaling.",
-		stack: ["Go", "Redis", "PostgreSQL", "Docker"],
-		href: "#",
+			"AI-powered platform built to automate and scale intelligent workflows. Designed and maintained the backend infrastructure, APIs, and data pipelines that power the core product.",
+		stack: ["Node.js", "TypeScript", "MongoDB", "Docker"],
+		href: "https://oreus.ai/",
 	},
 	{
 		id: "02",
-		name: "API Gateway",
-		year: "2023",
-		role: "Backend Engineer",
+		name: "Airbus Chips",
+		year: "2025",
+		role: "Full Stack",
 		description:
-			"Scalable reverse proxy with rate limiting, JWT authentication, and full observability. Reduced average API response time by 40% across all services.",
-		stack: ["Node.js", "TypeScript", "AWS", "Nginx"],
+			"Internal tool for Airbus to analyse engine component samples. Digitised and streamlined a critical inspection workflow, replacing manual processes with a structured data pipeline and reporting interface.",
+		stack: ["React", "TypeScript", "Node.js", "PostgreSQL"],
 		href: "#",
 	},
 	{
 		id: "03",
-		name: "Real-time Dashboard",
-		year: "2023",
+		name: "Monaco Beauté",
+		year: "2025",
 		role: "Full Stack",
 		description:
-			"Live analytics platform monitoring distributed systems with sub-second latency across 50+ microservices. Built on a WebSocket-first architecture.",
-		stack: ["React", "WebSocket", "InfluxDB", "Grafana"],
-		href: "#",
-	},
-	{
-		id: "04",
-		name: "Auth Service",
-		year: "2022",
-		role: "Lead Architect",
-		description:
-			"Zero-trust identity platform with SSO, MFA, and fine-grained RBAC. Serves 100K+ daily active users with 99.99% uptime SLA.",
-		stack: ["Go", "PostgreSQL", "Redis"],
-		href: "#",
+			"Web presence for a Marignane-based aesthetic salon — booking system, service showcase, and admin panel. Focused on a refined UI that matches the brand's high-end positioning.",
+		stack: ["React", "TypeScript", "Node.js"],
+		href: "https://monaco-beaute.lab.vlxx.fr/",
 	},
 ];
 
@@ -148,11 +138,16 @@ export const ProjectsSection = () => {
 
 				{/* project list */}
 				<div ref={listRef} className="flex flex-col gap-px">
-					{projects.map((p) => (
-						<a
+					{projects.map((p) => {
+						const isExternal = p.href !== "#";
+						const Tag = isExternal ? "a" : "div";
+						return (
+						<Tag
 							key={p.id}
-							href={p.href}
-							className="project-row group grid grid-cols-1 gap-4 border-t border-white/[0.07] py-8 transition-colors duration-200 hover:border-white/[0.15] md:grid-cols-[auto_1fr_auto] md:gap-12"
+							{...(isExternal
+								? { href: p.href, target: "_blank", rel: "noopener noreferrer" }
+								: {})}
+							className={`project-row group grid grid-cols-1 gap-4 border-t border-white/[0.07] py-8 transition-colors duration-200 hover:border-white/[0.15] md:grid-cols-[auto_1fr_auto] md:gap-12 ${isExternal ? "cursor-pointer" : "cursor-default"}`}
 						>
 							{/* number */}
 							<span
@@ -193,13 +188,16 @@ export const ProjectsSection = () => {
 									</p>
 									<p className="text-xs text-white/20">{p.role}</p>
 								</div>
+								{isExternal && (
 								<ArrowUpRight
 									size={15}
 									className="mt-0.5 shrink-0 text-white/20 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white/55 md:mt-auto"
 								/>
-							</div>
-						</a>
-					))}
+							)}
+						</div>
+						</Tag>
+						);
+					})}
 
 					<div className="border-t border-white/[0.07]" />
 				</div>

@@ -77,13 +77,17 @@ export const Footer = () => {
 						<a
 							href="https://github.com/13vlxx"
 							aria-label="GitHub"
+							target="_blank"
+							rel="noopener noreferrer"
 							className="text-white/35 transition-colors hover:text-white/80"
 						>
 							<Github size={17} />
 						</a>
 						<a
-							href="https://linkedin.com/in/arusescu"
+							href="https://fr.linkedin.com/in/arusescu"
 							aria-label="LinkedIn"
+							target="_blank"
+							rel="noopener noreferrer"
 							className="text-white/35 transition-colors hover:text-white/80"
 						>
 							<Linkedin size={17} />

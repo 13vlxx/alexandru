@@ -2,6 +2,14 @@ import { ArrowRight, Github, Linkedin } from "lucide-react";
 import { Button } from "#/components/ui/button";
 import { GrainientBackground } from "../backgrounds/grainient.background";
 
+const scrollToProjects = () => {
+	document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+};
+
+const scrollToContact = () => {
+	document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+};
+
 export const HeroSection = () => {
 	return (
 		<section className="relative h-screen overflow-hidden">
@@ -64,6 +72,7 @@ export const HeroSection = () => {
 				>
 					<Button
 						size="lg"
+						onClick={scrollToProjects}
 						className="cursor-pointer rounded-full border-0 bg-white px-7 text-sm font-semibold hover:bg-white/90"
 					>
 						View work
@@ -72,6 +81,7 @@ export const HeroSection = () => {
 					<Button
 						size="lg"
 						variant="ghost"
+						onClick={scrollToContact}
 						className="cursor-pointer rounded-full border border-white/20 px-7 text-sm font-semibold text-white hover:bg-white/10 hover:text-white"
 					>
 						Contact
@@ -83,15 +93,19 @@ export const HeroSection = () => {
 					style={{ animationDelay: "360ms", animationFillMode: "both" }}
 				>
 					<a
-						href="https://github.com"
+						href="https://github.com/13vlxx"
 						aria-label="GitHub"
+						target="_blank"
+						rel="noopener noreferrer"
 						className="text-white/35 transition-colors hover:text-white/80"
 					>
 						<Github size={18} />
 					</a>
 					<a
-						href="https://linkedin.com"
+						href="https://fr.linkedin.com/in/arusescu"
 						aria-label="LinkedIn"
+						target="_blank"
+						rel="noopener noreferrer"
 						className="text-white/35 transition-colors hover:text-white/80"
 					>
 						<Linkedin size={18} />
