@@ -1,7 +1,7 @@
-import { FuzzyText } from "#/components/ui/fuzzy-text";
 import { Link } from "@tanstack/react-router";
-import { GrainientBackground } from "../backgrounds/grainient.background";
 import { Button } from "#/components/ui/button";
+import { FuzzyText } from "#/components/ui/fuzzy-text";
+import { GrainientBackground } from "../backgrounds/grainient.background";
 
 export const NotFound = () => {
 	return (

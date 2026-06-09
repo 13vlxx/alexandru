@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from "react";
+import { useCallback, useRef, useState } from "react";
 
 type Props = {
 	children: React.ReactNode;
@@ -22,6 +22,7 @@ export const SpotlightCard = ({
 	}, []);
 
 	return (
+		// biome-ignore lint/a11y/noStaticElementInteractions: spotlight effect is purely decorative
 		<div
 			ref={cardRef}
 			onMouseMove={handleMouseMove}

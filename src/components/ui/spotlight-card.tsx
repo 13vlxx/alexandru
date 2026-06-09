@@ -27,6 +27,7 @@ export const SpotlightCard = ({
 	};
 
 	return (
+		// biome-ignore lint/a11y/noStaticElementInteractions: spotlight effect is purely decorative
 		<div
 			ref={divRef}
 			onMouseMove={handleMouseMove}

@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Monitor, Server, Smartphone, Cloud, Rocket } from "lucide-react";
+import { Cloud, Monitor, Rocket, Server, Smartphone } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { SpotlightCard } from "#/components/custom/cards/spotlight-card";
 import { useIsMobile } from "#/hooks/use-media-query";
 

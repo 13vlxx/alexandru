@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from "react";
-import { Renderer, Program, Mesh, Triangle } from "ogl";
+import { Mesh, Program, Renderer, Triangle } from "ogl";
+import type React from "react";
+import { useEffect, useRef } from "react";
 
 interface GrainientProps {
 	timeSpeed?: number;
@@ -293,7 +294,7 @@ export const GrainientBackground: React.FC<GrainientProps> = ({
 		const ctx = ctxMap.get(container);
 		if (!ctx) return;
 		const { program } = ctx;
-		const u = program.uniforms as Record<string, { value: any }>;
+		const u = program.uniforms as Record<string, { value: unknown }>;
 
 		u.uTimeSpeed.value = timeSpeed;
 		u.uColorBalance.value = colorBalance;
