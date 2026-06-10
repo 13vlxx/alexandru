@@ -6,18 +6,32 @@ import {
 	Outlet,
 	Scripts,
 } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { Footer } from "#/components/custom/_utils/footer";
 import { Navbar } from "#/components/custom/_utils/navbar";
 import { NotFound } from "#/components/custom/_utils/not-found";
+import i18n, { parseLangCookie } from "../i18n";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import appCss from "../styles.css?url";
+import { useTranslation } from "react-i18next";
+
+const getInitialLang = createServerFn({ method: "GET" }).handler(async () => {
+	const req = getRequest();
+	return parseLangCookie(req?.headers.get("cookie") ?? "");
+});
 
 interface MyRouterContext {
 	queryClient: QueryClient;
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
+	loader: async () => {
+		const initialLang = await getInitialLang();
+		await i18n.changeLanguage(initialLang);
+		return { initialLang };
+	},
 	head: () => ({
 		meta: [
 			{ charSet: "utf-8" },
@@ -71,8 +85,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 });
 
 function RootDocument() {
+	const { i18n: i18nInstance } = useTranslation();
+
 	return (
-		<html lang="en" className="scroll-smooth">
+		<html lang={i18nInstance.language} className="scroll-smooth">
 			<head>
 				<HeadContent />
 			</head>

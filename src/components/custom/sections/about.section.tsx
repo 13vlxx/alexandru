@@ -2,6 +2,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,15 +27,10 @@ const links = [
 	{ label: "Email", href: "mailto:alexmonac13@gmail.com" },
 ];
 
-const expertise = [
-	"System Architecture",
-	"API & Backend Design",
-	"Frontend Engineering",
-	"Team Leadership",
-	"Performance Optimization",
-];
 
 export const AboutSection = () => {
+	const { t } = useTranslation();
+	const expertise = t("about.expertise", { returnObjects: true }) as string[];
 	const sectionRef = useRef<HTMLElement>(null);
 	const linesRef = useRef<HTMLDivElement>(null);
 	const contentRef = useRef<HTMLDivElement>(null);
@@ -102,23 +98,23 @@ export const AboutSection = () => {
 				{/* top label row */}
 				<div className="mb-16 flex items-end justify-between">
 					<span className="text-xs font-semibold uppercase tracking-[0.22em] text-white/30">
-						01 / About
+						{t("about.section_label")}
 					</span>
 				</div>
 
 				{/* FuzzyText heading */}
 				<div ref={linesRef} className="mb-20">
-					<div className="overflow-hidden">
+					<div className="overflow-hidden pb-3">
 						<div className="line-inner">
 							<span
 								className="block text-[clamp(3.5rem,8.5vw,8rem)] font-bold leading-[1.05] tracking-tight text-white"
 								style={{ fontFamily: "Fraunces, Georgia, serif" }}
 							>
-								Software
+								{t("about.heading_1")}
 							</span>
 						</div>
 					</div>
-					<div className="overflow-hidden">
+					<div className="overflow-hidden pb-3">
 						<div className="line-inner">
 							<span
 								className="block text-[clamp(3.5rem,8.5vw,8rem)] font-bold leading-[1.05] tracking-tight"
@@ -127,7 +123,7 @@ export const AboutSection = () => {
 									color: "#5227FF",
 								}}
 							>
-								Architect.
+								{t("about.heading_2")}
 							</span>
 						</div>
 					</div>
@@ -144,22 +140,20 @@ export const AboutSection = () => {
 					{/* bio */}
 					<div className="space-y-4">
 						<p className="anim text-xs font-semibold uppercase tracking-[0.2em] text-white/25">
-							Profile
+							{t("about.profile_label")}
 						</p>
 						<p className="anim text-sm leading-relaxed text-white/50">
-							Software architect and developer building scalable, maintainable
-							systems. From database design to user interfaces — always with a
-							focus on clarity and craft.
+							{t("about.profile_bio_1")}
 						</p>
 						<p className="anim text-sm leading-relaxed text-white/50">
-							I care about doing it well — not just fast.
+							{t("about.profile_bio_2")}
 						</p>
 					</div>
 
 					{/* expertise */}
 					<div className="space-y-4">
 						<p className="anim text-xs font-semibold uppercase tracking-[0.2em] text-white/25">
-							Expertise
+							{t("about.expertise_label")}
 						</p>
 						<ul className="space-y-3">
 							{expertise.map((item) => (
@@ -177,7 +171,7 @@ export const AboutSection = () => {
 					{/* links */}
 					<div className="space-y-4">
 						<p className="anim text-xs font-semibold uppercase tracking-[0.2em] text-white/25">
-							Connect
+							{t("about.connect_label")}
 						</p>
 						<div>
 							{links.map(({ label, href }) => (
@@ -200,10 +194,10 @@ export const AboutSection = () => {
 						</div>
 						<div className="anim pt-3">
 							<p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/20">
-								Currently
+								{t("about.currently_label")}
 							</p>
 							<p className="text-sm leading-relaxed text-white/35">
-								Building this portfolio & exploring new frontend patterns.
+								{t("about.currently_text")}
 							</p>
 						</div>
 					</div>

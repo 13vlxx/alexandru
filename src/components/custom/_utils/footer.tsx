@@ -1,7 +1,9 @@
 import { Github, Linkedin, Mail } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { GrainientBackground } from "../backgrounds/grainient.background";
 
 export const Footer = () => {
+	const { t } = useTranslation();
 	const year = new Date().getFullYear();
 
 	return (
@@ -42,15 +44,15 @@ export const Footer = () => {
 				{/* main CTA */}
 				<div className="mb-20 mt-10 text-center">
 					<p className="mb-6 text-xs font-semibold uppercase tracking-[0.22em] text-white/45">
-						Available for new projects
+						{t("footer.available")}
 					</p>
 					<h2
 						className="text-[clamp(3rem,8vw,7rem)] font-bold leading-[0.95] tracking-tight text-white"
 						style={{ fontFamily: "Fraunces, Georgia, serif" }}
 					>
-						Let's build
+						{t("footer.heading_1")}
 						<br />
-						something.
+						{t("footer.heading_2")}
 					</h2>
 					<a
 						href="mailto:alexmonac13@gmail.com"
@@ -70,7 +72,7 @@ export const Footer = () => {
 					</span>
 
 					<span className="text-xs text-white/25">
-						© {year} — All rights reserved
+						© {year} — {t("footer.rights")}
 					</span>
 
 					<div className="flex items-center gap-5">

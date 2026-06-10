@@ -1,4 +1,5 @@
 import { ArrowRight, Github, Linkedin } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "#/components/ui/button";
 import { GrainientBackground } from "../backgrounds/grainient.background";
 
@@ -11,6 +12,8 @@ const scrollToContact = () => {
 };
 
 export const HeroSection = () => {
+	const { t } = useTranslation();
+
 	return (
 		<section className="relative h-screen overflow-hidden">
 			<GrainientBackground
@@ -42,7 +45,7 @@ export const HeroSection = () => {
 					className="animate-fade-in text-xs font-semibold uppercase tracking-[0.22em] text-white/55"
 					style={{ animationDelay: "0ms", animationFillMode: "both" }}
 				>
-					Software Architect &amp; Developer
+					{t("hero.subtitle")}
 				</p>
 
 				<h1
@@ -62,8 +65,7 @@ export const HeroSection = () => {
 					className="animate-fade-in max-w-sm text-[0.95rem] leading-relaxed text-white/60"
 					style={{ animationDelay: "180ms", animationFillMode: "both" }}
 				>
-					Building scalable systems and crafting thoughtful software — from
-					architecture to production.
+					{t("hero.description")}
 				</p>
 
 				<div
@@ -75,7 +77,7 @@ export const HeroSection = () => {
 						onClick={scrollToProjects}
 						className="cursor-pointer rounded-full border-0 bg-white px-7 text-sm font-semibold hover:bg-white/90"
 					>
-						View work
+						{t("hero.cta_work")}
 						<ArrowRight className="ml-1 size-4" />
 					</Button>
 					<Button
@@ -84,7 +86,7 @@ export const HeroSection = () => {
 						onClick={scrollToContact}
 						className="cursor-pointer rounded-full border border-white/20 px-7 text-sm font-semibold text-white hover:bg-white/10 hover:text-white"
 					>
-						Contact
+						{t("hero.cta_contact")}
 					</Button>
 				</div>
 

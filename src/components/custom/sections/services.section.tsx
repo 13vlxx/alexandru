@@ -2,60 +2,53 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Cloud, Monitor, Rocket, Server, Smartphone } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { SpotlightCard } from "#/components/custom/cards/spotlight-card";
 import { useIsMobile } from "#/hooks/use-media-query";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const services = [
+const SERVICE_DEFS = [
 	{
 		icon: Monitor,
-		title: "Frontend",
-		subtitle: "Development",
-		description:
-			"Pixel-perfect interfaces built with React and TypeScript. Design systems, animations, and performance optimisation that users actually feel.",
+		key: "frontend" as const,
 		tags: ["React", "TypeScript", "Tanstack Start", "Tailwind"],
 		size: "large",
 	},
 	{
 		icon: Server,
-		title: "Backend",
-		subtitle: "& APIs",
-		description:
-			"REST & GraphQL APIs, event-driven architectures, microservices. Clean, tested, and built to scale.",
+		key: "backend" as const,
 		tags: ["Node.js", "MongoDB", "PostgreSQL"],
 		size: "large",
 	},
 	{
 		icon: Smartphone,
-		title: "Mobile",
-		subtitle: "Apps",
-		description:
-			"Cross-platform iOS & Android apps with a native feel. Integrated with your existing APIs.",
+		key: "mobile" as const,
 		tags: ["SwiftUI", "JetpackCompose", "Expo"],
 		size: "small",
 	},
 	{
 		icon: Cloud,
-		title: "Infrastructure",
-		subtitle: "& Kubernetes",
-		description:
-			"Server config, Kubernetes clusters, networking, and security. Infrastructure as code for fully reproducible environments.",
+		key: "infra" as const,
 		tags: ["Kubernetes", "Docker"],
 		size: "small",
 	},
 	{
 		icon: Rocket,
-		title: "Deployment",
-		subtitle: "& CI/CD",
-		description:
-			"End-to-end pipelines, monitoring, and release management. From commit to production with confidence.",
+		key: "deployment" as const,
 		tags: ["GitHub Actions", "Helm", "ArgoCD", "Grafana"],
 		size: "small",
 	},
 ];
 
 export const ServicesSection = () => {
+	const { t } = useTranslation();
+	const services = SERVICE_DEFS.map((s) => ({
+		...s,
+		title: t(`services.items.${s.key}.title`),
+		subtitle: t(`services.items.${s.key}.subtitle`),
+		description: t(`services.items.${s.key}.description`),
+	}));
 	const sectionRef = useRef<HTMLElement>(null);
 	const linesRef = useRef<HTMLDivElement>(null);
 	const gridRef = useRef<HTMLDivElement>(null);
@@ -141,22 +134,22 @@ export const ServicesSection = () => {
 			<div className="relative mx-auto max-w-6xl px-6 py-28">
 				<div className="mb-16 flex items-end justify-between">
 					<span className="text-xs font-semibold uppercase tracking-[0.22em] text-white/30">
-						03 / Services
+						{t("services.section_label")}
 					</span>
 				</div>
 
 				<div ref={linesRef} className="mb-20">
-					<div className="overflow-hidden">
+					<div className="overflow-hidden pb-3">
 						<div className="line-inner">
 							<span
 								className="block text-[clamp(3.5rem,8.5vw,8rem)] font-bold leading-[1.05] tracking-tight text-white"
 								style={{ fontFamily: "Fraunces, Georgia, serif" }}
 							>
-								What I
+								{t("services.heading_1")}
 							</span>
 						</div>
 					</div>
-					<div className="overflow-hidden">
+					<div className="overflow-hidden pb-3">
 						<div className="line-inner">
 							<span
 								className="block text-[clamp(3.5rem,8.5vw,8rem)] font-bold leading-[1.05] tracking-tight"
@@ -165,7 +158,7 @@ export const ServicesSection = () => {
 									color: "#5227FF",
 								}}
 							>
-								build.
+								{t("services.heading_2")}
 							</span>
 						</div>
 					</div>

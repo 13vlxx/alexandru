@@ -2,18 +2,17 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import Silk from "#/components/custom/backgrounds/silk.background";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const projects = [
+const PROJECT_DEFS = [
 	{
 		id: "01",
 		name: "OreusAI",
 		year: "2026",
-		role: "Backend Developer",
-		description:
-			"AI-powered platform built to automate and scale intelligent workflows. Designed and maintained the backend infrastructure, APIs, and data pipelines that power the core product.",
+		key: "oreus" as const,
 		stack: ["Node.js", "TypeScript", "MongoDB", "Docker"],
 		href: "https://oreus.ai/",
 	},
@@ -21,9 +20,7 @@ const projects = [
 		id: "02",
 		name: "Airbus Chips",
 		year: "2025",
-		role: "Full Stack",
-		description:
-			"Internal tool for Airbus to analyse engine component samples. Digitised and streamlined a critical inspection workflow, replacing manual processes with a structured data pipeline and reporting interface.",
+		key: "airbus" as const,
 		stack: ["React", "TypeScript", "Node.js", "PostgreSQL"],
 		href: "#",
 	},
@@ -31,15 +28,19 @@ const projects = [
 		id: "03",
 		name: "Monaco Beauté",
 		year: "2025",
-		role: "Full Stack",
-		description:
-			"Web presence for a Marignane-based aesthetic salon — booking system, service showcase, and admin panel. Focused on a refined UI that matches the brand's high-end positioning.",
+		key: "monaco" as const,
 		stack: ["React", "TypeScript", "Node.js"],
 		href: "https://monaco-beaute.lab.vlxx.fr/",
 	},
 ];
 
 export const ProjectsSection = () => {
+	const { t } = useTranslation();
+	const projects = PROJECT_DEFS.map((p) => ({
+		...p,
+		role: t(`projects.items.${p.key}.role`),
+		description: t(`projects.items.${p.key}.description`),
+	}));
 	const sectionRef = useRef<HTMLElement>(null);
 	const linesRef = useRef<HTMLDivElement>(null);
 	const listRef = useRef<HTMLDivElement>(null);
@@ -105,23 +106,23 @@ export const ProjectsSection = () => {
 				{/* label */}
 				<div className="mb-16">
 					<span className="text-xs font-semibold uppercase tracking-[0.22em] text-white/30">
-						02 / Projects
+						{t("projects.section_label")}
 					</span>
 				</div>
 
 				{/* heading */}
 				<div ref={linesRef} className="mb-20">
-					<div className="overflow-hidden">
+					<div className="overflow-hidden pb-3">
 						<div className="line-inner">
 							<span
 								className="block text-[clamp(3.5rem,8.5vw,8rem)] font-bold leading-[1.05] tracking-tight text-white"
 								style={{ fontFamily: "Fraunces, Georgia, serif" }}
 							>
-								Selected
+								{t("projects.heading_1")}
 							</span>
 						</div>
 					</div>
-					<div className="overflow-hidden">
+					<div className="overflow-hidden pb-3">
 						<div className="line-inner">
 							<span
 								className="block text-[clamp(3.5rem,8.5vw,8rem)] font-bold leading-[1.05] tracking-tight"
@@ -130,7 +131,7 @@ export const ProjectsSection = () => {
 									color: "#5227FF",
 								}}
 							>
-								work.
+								{t("projects.heading_2")}
 							</span>
 						</div>
 					</div>
