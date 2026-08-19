@@ -27,12 +27,11 @@ const links = [
 	{ label: "Email", href: "mailto:alexmonac13@gmail.com" },
 ];
 
-
 export const AboutSection = () => {
 	const { t } = useTranslation();
 	const expertise = t("about.expertise", { returnObjects: true }) as string[];
 	const sectionRef = useRef<HTMLElement>(null);
-	const linesRef = useRef<HTMLDivElement>(null);
+	const linesRef = useRef<HTMLHeadingElement>(null);
 	const contentRef = useRef<HTMLDivElement>(null);
 	const marqueeRef = useRef<HTMLDivElement>(null);
 
@@ -103,7 +102,7 @@ export const AboutSection = () => {
 				</div>
 
 				{/* FuzzyText heading */}
-				<div ref={linesRef} className="mb-20">
+				<h2 ref={linesRef} className="mb-20">
 					<div className="overflow-hidden pb-3">
 						<div className="line-inner">
 							<span
@@ -127,7 +126,7 @@ export const AboutSection = () => {
 							</span>
 						</div>
 					</div>
-				</div>
+				</h2>
 
 				{/* separator */}
 				<div className="mb-16 h-px bg-linear-to-r from-white/12 via-white/5 to-transparent" />

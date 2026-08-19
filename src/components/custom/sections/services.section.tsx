@@ -50,7 +50,7 @@ export const ServicesSection = () => {
 		description: t(`services.items.${s.key}.description`),
 	}));
 	const sectionRef = useRef<HTMLElement>(null);
-	const linesRef = useRef<HTMLDivElement>(null);
+	const linesRef = useRef<HTMLHeadingElement>(null);
 	const gridRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -138,7 +138,7 @@ export const ServicesSection = () => {
 					</span>
 				</div>
 
-				<div ref={linesRef} className="mb-20">
+				<h2 ref={linesRef} className="mb-20">
 					<div className="overflow-hidden pb-3">
 						<div className="line-inner">
 							<span
@@ -162,7 +162,7 @@ export const ServicesSection = () => {
 							</span>
 						</div>
 					</div>
-				</div>
+				</h2>
 
 				<div ref={gridRef} className="flex flex-col gap-3">
 					{isMobile ? (

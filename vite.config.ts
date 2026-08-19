@@ -15,7 +15,7 @@ const config = defineConfig({
 		babel({ presets: [reactCompilerPreset()] }),
 	],
 	server: {
-		allowedHosts: ["front.dev.vlxx.fr"],
+		allowedHosts: ["front.localcan.arekkusu.dev"],
 		port: 5173,
 	},
 });

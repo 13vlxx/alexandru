@@ -42,7 +42,7 @@ export const ProjectsSection = () => {
 		description: t(`projects.items.${p.key}.description`),
 	}));
 	const sectionRef = useRef<HTMLElement>(null);
-	const linesRef = useRef<HTMLDivElement>(null);
+	const linesRef = useRef<HTMLHeadingElement>(null);
 	const listRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -111,7 +111,7 @@ export const ProjectsSection = () => {
 				</div>
 
 				{/* heading */}
-				<div ref={linesRef} className="mb-20">
+				<h2 ref={linesRef} className="mb-20">
 					<div className="overflow-hidden pb-3">
 						<div className="line-inner">
 							<span
@@ -135,7 +135,7 @@ export const ProjectsSection = () => {
 							</span>
 						</div>
 					</div>
-				</div>
+				</h2>
 
 				{/* project list */}
 				<div ref={listRef} className="flex flex-col gap-px">
