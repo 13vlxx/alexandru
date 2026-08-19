@@ -1,7 +1,7 @@
 import type { SupportedLang } from "#/i18n";
 
 export const SITE_URL = "https://arekkusu.dev";
-export const OG_IMAGE = `${SITE_URL}/og.png`;
+export const OG_IMAGE = `${SITE_URL}/og.jpg`;
 export const AUTHOR = "Rusescu Alexandru";
 
 /** Profils publics — repris tels quels dans le `sameAs` du JSON-LD. */

@@ -3,8 +3,6 @@ import { AboutSection } from "#/components/custom/sections/about.section";
 import { HeroSection } from "#/components/custom/sections/hero.section";
 import { ProjectsSection } from "#/components/custom/sections/projects.section";
 import { ServicesSection } from "#/components/custom/sections/services.section";
-import { Button } from "#/components/ui/button";
-import { useState } from "react";
 
 export const Route = createFileRoute("/")({ component: Home });
 
