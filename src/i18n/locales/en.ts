@@ -1,4 +1,16 @@
 const en = {
+	nav: {
+		about: "About",
+		projects: "Projects",
+		services: "Services",
+		contact: "Contact",
+		language: "Choose language",
+		skip: "Skip to content",
+	},
+	not_found: {
+		title: "Page not found.",
+		cta: "Go back home",
+	},
 	hero: {
 		subtitle: "Software Architect & Developer",
 		description:
@@ -25,17 +37,25 @@ const en = {
 		connect_label: "Connect",
 		currently_label: "Currently",
 		currently_text:
-			"Building this portfolio & exploring new frontend patterns.",
+			"Finishing my master's in software architecture, learning Neovim, and looking for new projects.",
 	},
 	projects: {
 		section_label: "02 / Projects",
 		heading_1: "Selected",
 		heading_2: "work.",
+		visit: "Visit site",
+		internal: "Internal tool",
+		pagination: "Choose a project",
 		items: {
 			oreus: {
 				role: "Backend Developer",
 				description:
 					"AI-powered platform built to automate and scale intelligent workflows. Designed and maintained the backend infrastructure, APIs, and data pipelines that power the core product.",
+			},
+			raissa: {
+				role: "Full Stack",
+				description:
+					"Showcase site for a beauty institute in Marignane — tabbed treatment menu, client reviews, and booking through Planity, installable as a PWA. White-and-gold editorial direction that reflects the brand's polished world.",
 			},
 			airbus: {
 				role: "Full Stack",

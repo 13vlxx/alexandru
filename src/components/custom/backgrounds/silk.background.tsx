@@ -1,7 +1,15 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import type React from "react";
-import { forwardRef, useLayoutEffect, useMemo, useRef } from "react";
+import {
+	forwardRef,
+	useEffect,
+	useLayoutEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import { Color, type Mesh, type ShaderMaterial } from "three";
+import { useReducedMotion } from "#/hooks/use-media-query";
 
 type NormalizedRGB = [number, number, number];
 
@@ -107,7 +115,8 @@ const SilkPlane = forwardRef<Mesh, SilkPlaneProps>(function SilkPlane(
 			const material = mesh.current.material as ShaderMaterial & {
 				uniforms: SilkUniforms;
 			};
-			material.uniforms.uTime.value += 0.1 * delta;
+			// Clamp: delta spans the whole pause after the loop resumes
+			material.uniforms.uTime.value += 0.1 * Math.min(delta, 0.1);
 		}
 	});
 
@@ -140,6 +149,19 @@ const Silk: React.FC<SilkProps> = ({
 	rotation = 0,
 }) => {
 	const meshRef = useRef<Mesh>(null);
+	const containerRef = useRef<HTMLDivElement>(null);
+	const reducedMotion = useReducedMotion();
+	const [isVisible, setIsVisible] = useState(false);
+
+	useEffect(() => {
+		const container = containerRef.current;
+		if (!container) return;
+		const io = new IntersectionObserver(([entry]) => {
+			setIsVisible(entry.isIntersecting);
+		});
+		io.observe(container);
+		return () => io.disconnect();
+	}, []);
 
 	const uniforms = useMemo<SilkUniforms>(
 		() => ({
@@ -154,9 +176,14 @@ const Silk: React.FC<SilkProps> = ({
 	);
 
 	return (
-		<Canvas dpr={[1, 2]} frameloop="always">
-			<SilkPlane ref={meshRef} uniforms={uniforms} />
-		</Canvas>
+		<div ref={containerRef} className="h-full w-full">
+			<Canvas
+				dpr={[1, 2]}
+				frameloop={isVisible && !reducedMotion ? "always" : "demand"}
+			>
+				<SilkPlane ref={meshRef} uniforms={uniforms} />
+			</Canvas>
+		</div>
 	);
 };
 

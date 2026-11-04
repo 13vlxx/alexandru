@@ -1,5 +1,5 @@
-import { Github, Linkedin, Mail } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { SocialLinks } from "#/components/custom/_utils/social-links";
 import { GrainientBackground } from "../backgrounds/grainient.background";
 
 export const Footer = () => {
@@ -7,8 +7,7 @@ export const Footer = () => {
 	const year = new Date().getFullYear();
 
 	return (
-		<footer id="contact" className="relative min-h-[600px] overflow-hidden">
-			<div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-40 bg-linear-to-b from-background to-transparent" />
+		<footer id="contact" className="relative min-h-[37.5rem] overflow-hidden">
 			{/* background fills the footer like the hero */}
 			<div className="absolute inset-0">
 				<GrainientBackground
@@ -36,6 +35,7 @@ export const Footer = () => {
 					zoom={0.85}
 				/>
 			</div>
+			<div className="absolute inset-0 bg-background/50" />
 
 			{/* fade from previous section */}
 			<div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-40 bg-linear-to-b from-background to-transparent" />
@@ -43,64 +43,34 @@ export const Footer = () => {
 			<div className="relative z-10 mx-auto max-w-6xl px-6 pb-10 pt-40">
 				{/* main CTA */}
 				<div className="mb-20 mt-10 text-center">
-					<p className="mb-6 text-xs font-semibold uppercase tracking-[0.22em] text-white/45">
+					<p className="mb-6 text-xs font-semibold uppercase tracking-[0.22em] text-white">
 						{t("footer.available")}
 					</p>
-					<h2
-						className="text-[clamp(3rem,8vw,7rem)] font-bold leading-[0.95] tracking-tight text-white"
-						style={{ fontFamily: "Fraunces, Georgia, serif" }}
-					>
+					<h2 className="font-display text-[clamp(3rem,8vw,7rem)] font-bold leading-[0.95] tracking-tight text-white">
 						{t("footer.heading_1")}
 						<br />
 						{t("footer.heading_2")}
 					</h2>
 					<a
 						href="mailto:alexmonac13@gmail.com"
-						className="mt-10 inline-block text-sm font-semibold text-white/60 underline underline-offset-4 transition-colors hover:text-white"
+						className="mt-8 inline-block p-2 text-sm font-semibold text-white underline underline-offset-4 transition-opacity duration-100 active:opacity-70"
 					>
 						alexmonac13@gmail.com
 					</a>
 				</div>
 
 				{/* bottom bar */}
-				<div className="flex flex-col items-center justify-between gap-6 border-t border-white/10 pt-8 md:flex-row">
-					<span
-						className="text-sm font-bold text-white/40"
-						style={{ fontFamily: "Fraunces, Georgia, serif" }}
-					>
+				<div className="flex flex-col items-center justify-between gap-6 border-t border-white/25 pt-8 md:flex-row">
+					<span className="font-display text-sm font-bold text-white/90">
 						Rusescu Alexandru
 					</span>
 
-					<span className="text-xs text-white/25">
+					<span className="text-xs text-white/90">
 						© {year} — {t("footer.rights")}
 					</span>
 
-					<div className="flex items-center gap-5">
-						<a
-							href="https://github.com/13vlxx"
-							aria-label="GitHub"
-							target="_blank"
-							rel="noopener noreferrer"
-							className="text-white/35 transition-colors hover:text-white/80"
-						>
-							<Github size={17} />
-						</a>
-						<a
-							href="https://fr.linkedin.com/in/arusescu"
-							aria-label="LinkedIn"
-							target="_blank"
-							rel="noopener noreferrer"
-							className="text-white/35 transition-colors hover:text-white/80"
-						>
-							<Linkedin size={17} />
-						</a>
-						<a
-							href="mailto:alexmonac13@gmail.com"
-							aria-label="Email"
-							className="text-white/35 transition-colors hover:text-white/80"
-						>
-							<Mail size={17} />
-						</a>
+					<div className="-m-3">
+						<SocialLinks withEmail />
 					</div>
 				</div>
 			</div>

@@ -1,49 +1,59 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap');
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 
 @import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
+/* Même condition que STACK_QUERY dans use-card-stack.ts */
+@custom-variant stack (@media (min-width: 64rem) and (min-height: 38rem) and (prefers-reduced-motion: no-preference));
 
 :root {
   /* color1=#5f395d, color2=#5227FF, color3=#B497CF */
-  --background: oklch(0.13 0.03 320);
+  --background: oklch(0.18 0.08 286);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.21 0.05 318);
+  --card: oklch(0.21 0.05 286);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.21 0.05 318);
+  --popover: oklch(0.21 0.05 286);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.44 0.27 268);
   --primary-foreground: oklch(0.1 0 0);
-  --secondary: oklch(0.33 0.08 320);
+  --secondary: oklch(0.33 0.08 286);
   --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.25 0.05 318);
+  --muted: oklch(0.25 0.05 286);
   --muted-foreground: oklch(0.68 0.09 305);
   --accent: oklch(0.68 0.09 305);
-  --accent-foreground: oklch(0.13 0.03 320);
+  --accent-foreground: oklch(0.18 0.08 286);
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.32 0.07 318);
-  --input: oklch(0.25 0.05 318);
-  --ring: oklch(0.44 0.27 268);
+  --border: oklch(0.32 0.07 286);
+  --input: oklch(0.25 0.05 286);
+  --ring: oklch(0.985 0 0);
+  --brand: #5227ff;
+  --brand-soft: #8f78ff;
+  --radius: 0.625rem;
   --chart-1: oklch(0.44 0.27 268);
   --chart-2: oklch(0.68 0.09 305);
-  --chart-3: oklch(0.33 0.08 320);
+  --chart-3: oklch(0.33 0.08 286);
   --chart-4: oklch(0.58 0.18 285);
   --chart-5: oklch(0.72 0.13 295);
-  --sidebar: oklch(0.18 0.04 319);
+  --sidebar: oklch(0.18 0.04 286);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.44 0.27 268);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.25 0.05 318);
+  --sidebar-accent: oklch(0.25 0.05 286);
   --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.32 0.07 318);
+  --sidebar-border: oklch(0.32 0.07 286);
   --sidebar-ring: oklch(0.44 0.27 268);
 }
 
 @theme inline {
   --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fraunces', Georgia, serif;
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+  --animate-fade-in: fade-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  /* Ressort critique (damping 1, response 0.4s), à utiliser sur 0.5-0.6s */
+  --ease-spring: linear(0, 0.118, 0.329, 0.527, 0.682, 0.793, 0.868, 0.917, 0.949, 0.969, 0.981, 0.989, 0.993, 0.996, 0.998, 0.999, 1);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -80,8 +90,231 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(var(--fade-offset, 0.75rem));
+    }
+  }
 }
 
 html {
-  scroll-behavior: smooth;
+  color-scheme: dark;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+
+  a,
+  button {
+    touch-action: manipulation;
+  }
+}
+
+/* Floating chrome: content scrolls underneath, the surface keeps it legible. */
+.material {
+  background-color: color-mix(in oklab, var(--background) 62%, transparent);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* Opaque : les cartes se recouvrent, deux surfaces translucides seraient illisibles */
+.surface-card {
+  border-radius: 2rem;
+  background: color-mix(in oklab, var(--background) 94%, var(--accent));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.08),
+    0 1.5rem 4rem -1.5rem rgb(0 0 0 / 0.7);
+}
+
+.project-stage {
+  background:
+    radial-gradient(120% 90% at 70% 0%, color-mix(in oklab, var(--accent) 24%, transparent), transparent 70%),
+    rgb(255 255 255 / 0.02);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06);
+}
+
+/* La scène suit le sens de la liste : on descend, le visuel part vers le haut */
+.stage-slide {
+  transition:
+    opacity 0.25s ease,
+    translate 0.6s var(--ease-spring),
+    scale 0.6s var(--ease-spring),
+    visibility 0s;
+}
+
+.stage-slide:not([data-state='active']) {
+  opacity: 0;
+  scale: 0.98;
+  visibility: hidden;
+  transition-delay: 0s, 0s, 0s, 0.25s;
+}
+
+.stage-slide[data-state='before'] {
+  translate: 0 -1.5rem;
+}
+
+.stage-slide[data-state='after'] {
+  translate: 0 1.5rem;
+}
+
+.stage-slide [data-piece] {
+  transform-box: fill-box;
+  transition:
+    opacity 0.3s ease,
+    translate 0.6s var(--ease-spring),
+    scale 0.6s var(--ease-spring),
+    stroke-dashoffset 0.6s var(--ease-spring);
+  transition-delay: calc(var(--i, 0) * 45ms + 80ms);
+}
+
+/* Les pièces se réinitialisent une fois la diapositive masquée */
+.stage-slide:not([data-state='active']) [data-piece] {
+  opacity: 0;
+  transition-duration: 0s;
+  transition-delay: 0.25s;
+}
+
+.stage-slide:not([data-state='active']) [data-piece='rise'] {
+  translate: 0 var(--shift, 0.5rem);
+}
+
+.stage-slide:not([data-state='active']) [data-piece='grow'] {
+  scale: 0 1;
+}
+
+.stage-slide:not([data-state='active']) [data-piece='pop'] {
+  scale: 0.7;
+}
+
+.stage-slide [data-piece='grow'] {
+  transform-origin: left;
+}
+
+.stage-slide [data-piece='pop'] {
+  transform-origin: center;
+}
+
+.stage-slide [data-piece='draw'] {
+  stroke-dasharray: 1;
+}
+
+.stage-slide:not([data-state='active']) [data-piece='draw'] {
+  stroke-dashoffset: 1;
+}
+
+/* Services mobile : la scène reste épinglée, le scroll de la page pilote tout */
+.service-story {
+  --progress: 0;
+  --stage-top: 4.5rem;
+  --stage: clamp(11rem, 42svh, 22rem);
+  --chapter: clamp(20rem, calc(100svh - var(--stage-top) - var(--stage)), 26rem);
+}
+
+.service-scene {
+  --distance: max(var(--progress) - var(--i), var(--i) - var(--progress));
+  opacity: calc(1 - var(--distance) * 1.4);
+  translate: 0 calc((var(--i) - var(--progress)) * 12%);
+}
+
+.service-scene::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(closest-side, oklch(0.6 0.2 var(--tint) / 0.34), transparent);
+}
+
+/* Marge autour du visuel : le halo doit s'éteindre avant le bord de la scène */
+.service-scene > .stage-slide {
+  inset-block: 1.5rem 0.5rem;
+}
+
+.service-scene > .stage-slide:not([data-state='active']) {
+  opacity: 1;
+  scale: none;
+  translate: none;
+  visibility: visible;
+}
+
+/* Palier de lecture : sans snap, le texte doit rester net autour de sa position.
+   En sortie il s'efface vite pour ne jamais passer sur le visuel */
+.service-chapter {
+  opacity: calc(1 - max((var(--progress) - var(--i) - 0.12) * 5, (var(--i) - var(--progress) - 0.12) * 1.5));
+}
+
+/* Trop peu de hauteur pour épingler quoi que ce soit : le texte seul, en flux */
+@media (max-height: 30rem) {
+  .service-story {
+    --stage: 0rem;
+    --chapter: auto;
+  }
+
+  .service-track {
+    display: none;
+  }
+
+  .service-chapter {
+    opacity: 1;
+    padding-bottom: 2.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --fade-offset: 0;
+  }
+
+  .stage-slide,
+  .stage-slide[data-state],
+  .stage-slide [data-piece],
+  .stage-slide:not([data-state='active']) [data-piece] {
+    translate: none;
+    scale: none;
+    stroke-dashoffset: 0;
+    transition-property: opacity, visibility;
+    transition-duration: 0.2s, 0s;
+    transition-delay: 0s;
+  }
+
+  .service-scene {
+    translate: none;
+  }
+
+  [data-slot='dropdown-menu-content'] {
+    --tw-enter-scale: 1 !important;
+    --tw-exit-scale: 1 !important;
+    --tw-enter-translate-x: 0 !important;
+    --tw-enter-translate-y: 0 !important;
+    --tw-exit-translate-x: 0 !important;
+    --tw-exit-translate-y: 0 !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .material {
+    background-color: var(--background);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .material {
+    background-color: var(--background);
+    border-color: var(--foreground);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }

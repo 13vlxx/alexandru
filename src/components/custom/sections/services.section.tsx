@@ -1,45 +1,128 @@
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Cloud, Monitor, Rocket, Server, Smartphone } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { type CSSProperties, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { SectionHeading } from "#/components/custom/_utils/section-heading";
 import { SpotlightCard } from "#/components/custom/cards/spotlight-card";
-import { useIsMobile } from "#/hooks/use-media-query";
-
-gsap.registerPlugin(ScrollTrigger);
+import { SERVICE_VISUALS } from "#/components/custom/visuals/service.visual";
+import { useScrollChapters } from "#/hooks/use-scroll-chapters";
+import { useSectionReveal } from "#/hooks/use-section-reveal";
 
 const SERVICE_DEFS = [
 	{
-		icon: Monitor,
 		key: "frontend" as const,
+		tint: 286,
 		tags: ["React", "TypeScript", "Tanstack Start", "Tailwind"],
-		size: "large",
 	},
 	{
-		icon: Server,
 		key: "backend" as const,
+		tint: 255,
 		tags: ["Node.js", "MongoDB", "PostgreSQL"],
-		size: "large",
 	},
 	{
-		icon: Smartphone,
 		key: "mobile" as const,
+		tint: 325,
 		tags: ["SwiftUI", "JetpackCompose", "Expo"],
-		size: "small",
 	},
 	{
-		icon: Cloud,
 		key: "infra" as const,
+		tint: 215,
 		tags: ["Kubernetes", "Docker"],
-		size: "small",
 	},
 	{
-		icon: Rocket,
 		key: "deployment" as const,
+		tint: 350,
 		tags: ["GitHub Actions", "Helm", "ArgoCD", "Grafana"],
-		size: "small",
 	},
 ];
+
+const slideState = (index: number, active: number) => {
+	if (index === active) return "active";
+	return index < active ? "before" : "after";
+};
+
+type Service = {
+	key: (typeof SERVICE_DEFS)[number]["key"];
+	tint: number;
+	tags: string[];
+	title: string;
+	subtitle: string;
+	description: string;
+};
+
+/**
+ * Mobile only. The stage stays pinned while the chapters scroll out from under
+ * it, so every visual sits next to its text and the page scroll stays free.
+ * Text is gone before it reaches the stage, which therefore needs no backdrop.
+ */
+const ServiceStory = ({ services }: { services: Service[] }) => {
+	const rootRef = useRef<HTMLDivElement>(null);
+	const stageRef = useRef<HTMLDivElement>(null);
+	const listRef = useRef<HTMLOListElement>(null);
+	const active = useScrollChapters(rootRef, stageRef, listRef);
+
+	return (
+		<div data-reveal-group className="lg:hidden">
+			<div ref={rootRef} data-reveal className="service-story relative -mx-6">
+				<div
+					aria-hidden="true"
+					className="service-track pointer-events-none absolute inset-x-0 top-0 bottom-(--chapter)"
+				>
+					<div ref={stageRef} className="sticky top-(--stage-top) h-(--stage)">
+						{services.map(({ key, tint }, i) => {
+							const Visual = SERVICE_VISUALS[key];
+							return (
+								<div
+									key={key}
+									className="service-scene absolute inset-0"
+									style={{ "--i": i, "--tint": tint } as CSSProperties}
+								>
+									<div
+										data-state={slideState(i, active)}
+										className="stage-slide absolute inset-0"
+									>
+										<Visual whole />
+									</div>
+								</div>
+							);
+						})}
+					</div>
+				</div>
+
+				<ol ref={listRef} className="relative pt-(--stage)">
+					{services.map((s, i) => (
+						<li
+							key={s.key}
+							className="service-chapter h-(--chapter) px-6 pt-6"
+							style={{ "--i": i } as CSSProperties}
+						>
+							<div className="mx-auto max-w-xl">
+								<p className="mb-2 text-xs font-medium tabular-nums tracking-wide text-white/55">
+									{String(i + 1).padStart(2, "0")} /{" "}
+									{String(services.length).padStart(2, "0")}
+								</p>
+								<h3 className="font-display text-[2rem] font-bold leading-[1.05] tracking-tight text-white">
+									{s.title} <span className="text-white/55">{s.subtitle}</span>
+								</h3>
+								<p className="mt-3 text-pretty text-sm leading-relaxed text-white/70">
+									{s.description}
+								</p>
+								<ul className="mt-4 flex flex-wrap gap-1.5">
+									{s.tags.map((tag) => (
+										<li
+											key={tag}
+											className="rounded-full bg-white/[0.06] px-2.5 py-1 text-xs font-medium text-white/70"
+										>
+											{tag}
+										</li>
+									))}
+								</ul>
+							</div>
+						</li>
+					))}
+				</ol>
+			</div>
+		</div>
+	);
+};
 
 export const ServicesSection = () => {
 	const { t } = useTranslation();
@@ -49,175 +132,108 @@ export const ServicesSection = () => {
 		subtitle: t(`services.items.${s.key}.subtitle`),
 		description: t(`services.items.${s.key}.description`),
 	}));
+	const [active, setActive] = useState(0);
 	const sectionRef = useRef<HTMLElement>(null);
-	const linesRef = useRef<HTMLHeadingElement>(null);
-	const gridRef = useRef<HTMLDivElement>(null);
-
-	useEffect(() => {
-		const ctx = gsap.context(() => {
-			gsap.fromTo(
-				linesRef.current?.querySelectorAll(".line-inner"),
-				{ yPercent: 110 },
-				{
-					yPercent: 0,
-					stagger: 0.1,
-					duration: 1.1,
-					ease: "power4.out",
-					scrollTrigger: {
-						trigger: linesRef.current,
-						start: "top 80%",
-					},
-				},
-			);
-
-			gsap.fromTo(
-				gridRef.current?.querySelectorAll(".service-card"),
-				{ y: 28, opacity: 0 },
-				{
-					y: 0,
-					opacity: 1,
-					stagger: 0.08,
-					duration: 0.7,
-					ease: "power3.out",
-					scrollTrigger: {
-						trigger: gridRef.current,
-						start: "top 82%",
-					},
-				},
-			);
-		}, sectionRef);
-
-		return () => ctx.revert();
-	}, []);
-
-	const isMobile = useIsMobile();
-	const [large1, large2, ...smalls] = services;
-
-	const SmallCard = ({ s }: { s: (typeof services)[number] }) => {
-		const Icon = s.icon;
-		return (
-			<SpotlightCard className="p-6">
-				<div className="mb-5 flex items-center gap-3">
-					<div className="rounded-full border border-[#5227FF]/25 bg-[#5227FF]/8 p-2.5">
-						<Icon size={16} className="text-[#5227FF]/80" strokeWidth={1.5} />
-					</div>
-					<h3
-						className="text-base font-bold text-white/75"
-						style={{ fontFamily: "Fraunces, Georgia, serif" }}
-					>
-						{s.title} <span className="text-white/30">{s.subtitle}</span>
-					</h3>
-				</div>
-				<p className="mb-5 text-sm leading-relaxed text-white/38">
-					{s.description}
-				</p>
-				<div className="flex flex-wrap gap-1.5">
-					{s.tags.map((tag) => (
-						<span
-							key={tag}
-							className="rounded-full border border-white/10 px-2 py-0.5 text-[0.55rem] font-semibold uppercase tracking-wider text-white/22"
-						>
-							{tag}
-						</span>
-					))}
-				</div>
-			</SpotlightCard>
-		);
-	};
+	useSectionReveal(sectionRef);
 
 	return (
 		<section
 			id="services"
 			ref={sectionRef}
-			className="relative overflow-hidden bg-background"
+			className="relative bg-background max-lg:overflow-clip lg:overflow-hidden"
 		>
 			<div className="relative mx-auto max-w-6xl px-6 py-28">
-				<div className="mb-16 flex items-end justify-between">
-					<span className="text-xs font-semibold uppercase tracking-[0.22em] text-white/30">
-						{t("services.section_label")}
-					</span>
-				</div>
+				<SectionHeading
+					label={t("services.section_label")}
+					line1={t("services.heading_1")}
+					line2={t("services.heading_2")}
+				/>
 
-				<h2 ref={linesRef} className="mb-20">
-					<div className="overflow-hidden pb-3">
-						<div className="line-inner">
-							<span
-								className="block text-[clamp(3.5rem,8.5vw,8rem)] font-bold leading-[1.05] tracking-tight text-white"
-								style={{ fontFamily: "Fraunces, Georgia, serif" }}
-							>
-								{t("services.heading_1")}
-							</span>
-						</div>
-					</div>
-					<div className="overflow-hidden pb-3">
-						<div className="line-inner">
-							<span
-								className="block text-[clamp(3.5rem,8.5vw,8rem)] font-bold leading-[1.05] tracking-tight"
-								style={{
-									fontFamily: "Fraunces, Georgia, serif",
-									color: "#5227FF",
-								}}
-							>
-								{t("services.heading_2")}
-							</span>
-						</div>
-					</div>
-				</h2>
+				<ServiceStory services={services} />
 
-				<div ref={gridRef} className="flex flex-col gap-3">
-					{isMobile ? (
-						services.map((s) => <SmallCard key={s.title} s={s} />)
-					) : (
-						<>
-							<div className="grid grid-cols-2 gap-3">
-								{[large1, large2].map((s) => {
-									const Icon = s.icon;
-									return (
-										<SpotlightCard key={s.title} className="p-8">
-											<div className="flex h-full flex-col justify-between gap-8">
-												<div className="flex items-start justify-between">
-													<div className="rounded-full border border-[#5227FF]/30 bg-[#5227FF]/10 p-3">
-														<Icon
-															size={22}
-															className="text-[#5227FF]"
-															strokeWidth={1.5}
-														/>
-													</div>
-													<div className="flex flex-wrap justify-end gap-1.5">
-														{s.tags.map((tag) => (
-															<span
-																key={tag}
-																className="rounded-full border border-white/10 px-2 py-0.5 text-[0.55rem] font-semibold uppercase tracking-wider text-white/25"
-															>
-																{tag}
-															</span>
-														))}
-													</div>
-												</div>
-												<div>
-													<h3
-														className="mb-2 text-2xl font-bold text-white/80"
-														style={{ fontFamily: "Fraunces, Georgia, serif" }}
+				<div
+					data-reveal-group
+					className="grid grid-cols-1 gap-6 max-lg:hidden lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16"
+				>
+					<ul>
+						{services.map((s, i) => {
+							const isActive = i === active;
+							return (
+								<li
+									key={s.key}
+									data-reveal
+									className="border-t border-white/10"
+								>
+									<h3>
+										<button
+											type="button"
+											id={`service-${s.key}`}
+											aria-expanded={isActive}
+											aria-controls={`service-${s.key}-panel`}
+											onPointerDown={(e) => {
+												if (e.pointerType === "mouse") setActive(i);
+											}}
+											onClick={() => setActive(i)}
+											className={`group flex w-full cursor-pointer items-center justify-between gap-4 py-5 text-left font-display text-2xl font-bold tracking-tight transition-colors duration-200 md:text-[2rem] ${isActive ? "text-white" : "text-white/55 hover:text-white/80"}`}
+										>
+											<span className="origin-left transition-transform duration-100 ease-out group-active:scale-[0.98]">
+												{s.title}{" "}
+												<span className={isActive ? "text-white/55" : ""}>
+													{s.subtitle}
+												</span>
+											</span>
+											<span
+												aria-hidden="true"
+												className={`size-2 shrink-0 rounded-full bg-brand-soft transition-[scale,opacity] duration-300 ease-spring motion-reduce:transition-opacity ${isActive ? "opacity-100" : "scale-0 opacity-0"}`}
+											/>
+										</button>
+									</h3>
+									<section
+										id={`service-${s.key}-panel`}
+										aria-labelledby={`service-${s.key}`}
+										inert={!isActive}
+										className={`grid transition-[grid-template-rows,opacity] duration-500 ease-spring motion-reduce:transition-opacity ${isActive ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
+									>
+										<div className="min-h-0 overflow-hidden">
+											<p className="mb-4 max-w-[46ch] text-pretty text-sm leading-relaxed text-white/70 md:text-base">
+												{s.description}
+											</p>
+											<ul className="flex flex-wrap gap-1.5 pb-6">
+												{s.tags.map((tag) => (
+													<li
+														key={tag}
+														className="rounded-full bg-white/[0.06] px-2.5 py-1 text-xs font-medium text-white/70"
 													>
-														{s.title}{" "}
-														<span className="text-white/30">{s.subtitle}</span>
-													</h3>
-													<p className="text-sm leading-relaxed text-white/40">
-														{s.description}
-													</p>
-												</div>
-											</div>
-										</SpotlightCard>
-									);
-								})}
-							</div>
-							<div className="grid grid-cols-3 gap-3">
-								{smalls.map((s) => (
-									<SmallCard key={s.title} s={s} />
-								))}
-							</div>
-						</>
-					)}
+														{tag}
+													</li>
+												))}
+											</ul>
+										</div>
+									</section>
+								</li>
+							);
+						})}
+					</ul>
+
+					<SpotlightCard className="order-first aspect-[4/3] lg:order-last lg:aspect-auto lg:min-h-[37rem]">
+						<div
+							aria-hidden="true"
+							className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_45%,color-mix(in_srgb,var(--brand)_16%,transparent),transparent)]"
+						>
+							{services.map(({ key }, i) => {
+								const Visual = SERVICE_VISUALS[key];
+								return (
+									<div
+										key={key}
+										data-state={slideState(i, active)}
+										className="stage-slide absolute inset-0"
+									>
+										<Visual />
+									</div>
+								);
+							})}
+						</div>
+					</SpotlightCard>
 				</div>
 			</div>
 		</section>

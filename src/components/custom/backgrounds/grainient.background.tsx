@@ -170,18 +170,26 @@ export const GrainientBackground: React.FC<GrainientProps> = ({
 		const container = containerRef.current;
 		if (!container) return;
 
-		const renderer = new Renderer({
-			webgl: 2,
-			alpha: true,
-			antialias: false,
-			dpr: Math.min(window.devicePixelRatio || 1, 2),
-		});
+		let renderer: Renderer;
+		try {
+			renderer = new Renderer({
+				webgl: 2,
+				alpha: true,
+				antialias: false,
+				dpr: Math.min(window.devicePixelRatio || 1, 2),
+			});
+		} catch {
+			// No WebGL 2: the container's CSS gradient stays visible
+			return;
+		}
 
 		const gl = renderer.gl;
 		const canvas = gl.canvas as HTMLCanvasElement;
 		canvas.style.width = "100%";
 		canvas.style.height = "100%";
 		canvas.style.display = "block";
+		canvas.style.opacity = "0";
+		canvas.style.transition = "opacity 600ms ease-out";
 		container.appendChild(canvas);
 
 		const geometry = new Triangle(gl);
@@ -238,6 +246,7 @@ export const GrainientBackground: React.FC<GrainientProps> = ({
 		let isVisible = true;
 		let isPageVisible = !document.hidden;
 		const t0 = performance.now();
+		const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 		const loop = (t: number) => {
 			(program.uniforms.iTime as { value: number }).value = (t - t0) * 0.001;
@@ -246,7 +255,7 @@ export const GrainientBackground: React.FC<GrainientProps> = ({
 		};
 
 		const tryStart = () => {
-			if (isVisible && isPageVisible && raf === 0)
+			if (isVisible && isPageVisible && !reducedMotion.matches && raf === 0)
 				raf = requestAnimationFrame(loop);
 		};
 		const tryStop = () => {
@@ -271,13 +280,25 @@ export const GrainientBackground: React.FC<GrainientProps> = ({
 		};
 		document.addEventListener("visibilitychange", onVisibility);
 
+		const onMotionChange = () => {
+			reducedMotion.matches ? tryStop() : tryStart();
+		};
+		reducedMotion.addEventListener("change", onMotionChange);
+
 		tryStart();
+
+		// Reveal on the next frame, once effect 2 has pushed the real uniforms
+		const revealRaf = requestAnimationFrame(() => {
+			canvas.style.opacity = "1";
+		});
 
 		return () => {
 			tryStop();
+			cancelAnimationFrame(revealRaf);
 			ro.disconnect();
 			io.disconnect();
 			document.removeEventListener("visibilitychange", onVisibility);
+			reducedMotion.removeEventListener("change", onMotionChange);
 			ctxMap.delete(container);
 			try {
 				container.removeChild(canvas);
@@ -293,7 +314,7 @@ export const GrainientBackground: React.FC<GrainientProps> = ({
 		if (!container) return;
 		const ctx = ctxMap.get(container);
 		if (!ctx) return;
-		const { program } = ctx;
+		const { renderer, program, mesh } = ctx;
 		const u = program.uniforms as Record<string, { value: unknown }>;
 
 		u.uTimeSpeed.value = timeSpeed;
@@ -317,6 +338,8 @@ export const GrainientBackground: React.FC<GrainientProps> = ({
 		u.uColor1.value = new Float32Array(hexToRgb(color1));
 		u.uColor2.value = new Float32Array(hexToRgb(color2));
 		u.uColor3.value = new Float32Array(hexToRgb(color3));
+		// Paused loops (reduced motion) still need the first real frame
+		renderer.render({ scene: mesh });
 	}, [
 		timeSpeed,
 		colorBalance,
@@ -346,6 +369,9 @@ export const GrainientBackground: React.FC<GrainientProps> = ({
 		<div
 			ref={containerRef}
 			className={`relative h-full w-full overflow-hidden ${className}`.trim()}
+			style={{
+				background: `linear-gradient(100deg, ${color1}, ${color2} 55%, ${color3})`,
+			}}
 		/>
 	);
 };
