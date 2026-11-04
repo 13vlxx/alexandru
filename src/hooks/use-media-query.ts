@@ -89,6 +89,6 @@ export function useMediaQuery(
 	return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
-export function useIsMobile(): boolean {
-	return useMediaQuery("max-md");
+export function useReducedMotion(): boolean {
+	return useMediaQuery("(prefers-reduced-motion: reduce)");
 }

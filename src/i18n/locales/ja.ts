@@ -1,4 +1,16 @@
 const ja = {
+	nav: {
+		about: "概要",
+		projects: "プロジェクト",
+		services: "サービス",
+		contact: "お問い合わせ",
+		language: "言語を選択",
+		skip: "本文へスキップ",
+	},
+	not_found: {
+		title: "ページが見つかりません。",
+		cta: "ホームに戻る",
+	},
 	hero: {
 		subtitle: "ソフトウェアアーキテクト & デベロッパー",
 		description:
@@ -25,17 +37,24 @@ const ja = {
 		connect_label: "連絡先",
 		currently_label: "現在",
 		currently_text:
-			"このポートフォリオを構築中 & 新しいフロントエンドのパターンを探求中。",
+			"ソフトウェアアーキテクチャの修士課程を修了間近。Neovimを学びながら、新しいプロジェクトを探しています。",
 	},
 	projects: {
 		section_label: "02 / プロジェクト",
 		heading_1: "厳選した",
 		heading_2: "作品。",
+		visit: "サイトを見る",
+		internal: "社内ツール",
 		items: {
 			oreus: {
 				role: "バックエンド開発者",
 				description:
 					"インテリジェントなワークフローを自動化・スケールするAI搭載プラットフォーム。コア製品を支えるバックエンドインフラ、API、データパイプラインを設計・運用。",
+			},
+			raissa: {
+				role: "フルスタック",
+				description:
+					"マリニャーヌの美容サロンの紹介サイト — タブ式の施術メニュー、お客様の声、Planityでの予約に対応し、PWAとしてインストール可能。ブランドの世界観を映す白と金のエディトリアルなデザイン。",
 			},
 			airbus: {
 				role: "フルスタック",

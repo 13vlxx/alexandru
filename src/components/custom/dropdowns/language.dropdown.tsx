@@ -6,44 +6,55 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "#/components/ui/dropdown-menu";
-import i18n, { LANG_COOKIE, SUPPORTED_LANGUAGES, type SupportedLang } from "#/i18n";
+import i18n, {
+	LANG_COOKIE,
+	SUPPORTED_LANGUAGES,
+	type SupportedLang,
+} from "#/i18n";
 
 export const LanguageDropdown = () => {
-	const { i18n: i18nInstance } = useTranslation();
+	const { t, i18n: i18nInstance } = useTranslation();
 	const currentLang = i18nInstance.language as SupportedLang;
 
 	const changeLanguage = (code: SupportedLang) => {
 		i18n.changeLanguage(code);
+		document.documentElement.lang = code;
 		document.cookie = `${LANG_COOKIE}=${code};path=/;max-age=31536000;SameSite=Lax`;
 	};
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger className="group flex cursor-pointer items-center gap-1.5 rounded-full border border-transparent px-3 py-1.5 text-white/40 outline-none transition-all hover:border-white/10 hover:bg-white/5 hover:text-white/80 data-[state=open]:border-white/10 data-[state=open]:bg-white/5 data-[state=open]:text-white">
-				<Languages size={13} />
-				<span className="text-[0.65rem] font-semibold uppercase tracking-wider">
+			<DropdownMenuTrigger
+				aria-label={t("nav.language")}
+				className="group flex h-9 cursor-pointer items-center gap-1.5 rounded-full px-3 text-white/90 transition-[background-color,color,scale] duration-100 hover:bg-white/10 hover:text-white motion-safe:active:scale-[0.97] data-[state=open]:bg-white/10 data-[state=open]:text-white"
+			>
+				<Languages size={14} />
+				<span className="text-xs font-semibold uppercase tracking-wider">
 					{currentLang}
 				</span>
 				<ChevronDown
-					size={11}
+					size={12}
 					className="transition-transform duration-200 group-data-[state=open]:rotate-180"
 				/>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent
 				align="end"
-				className="w-40 rounded-2xl border-white/10 bg-[#0d0820]/90 p-1.5 shadow-2xl backdrop-blur-md"
+				sideOffset={10}
+				className="material w-40 rounded-2xl p-1.5 shadow-2xl"
 			>
 				{SUPPORTED_LANGUAGES.map(({ code, label }) => (
 					<DropdownMenuItem
 						key={code}
+						lang={code}
+						aria-current={currentLang === code ? "true" : undefined}
 						onClick={() => changeLanguage(code)}
-						className={`flex cursor-pointer justify-between rounded-xl px-4 py-2.5 text-xs font-medium transition-colors focus:bg-white/5 focus:text-white ${
-							currentLang === code ? "text-white" : "text-white/40"
+						className={`flex cursor-pointer justify-between rounded-xl px-4 py-2.5 text-sm font-medium transition-colors focus:bg-white/10 focus:text-white ${
+							currentLang === code ? "text-white" : "text-white/75"
 						}`}
 					>
 						{label}
 						{currentLang === code && (
-							<span className="h-1.5 w-1.5 rounded-full bg-[#5227FF]" />
+							<span className="h-1.5 w-1.5 rounded-full bg-brand-soft" />
 						)}
 					</DropdownMenuItem>
 				))}

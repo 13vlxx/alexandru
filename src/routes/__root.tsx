@@ -18,6 +18,9 @@ import i18n, { parseLangCookie, type SupportedLang } from "../i18n";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import appCss from "../styles.css?url";
 
+const FONTS_CSS =
+	"https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap";
+
 const getInitialLang = createServerFn({ method: "GET" }).handler(async () => {
 	const req = getRequest();
 	return parseLangCookie(req?.headers.get("cookie") ?? "");
@@ -71,6 +74,13 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				{ name: "theme-color", content: "#5227FF" },
 			],
 			links: [
+				{ rel: "preconnect", href: "https://fonts.googleapis.com" },
+				{
+					rel: "preconnect",
+					href: "https://fonts.gstatic.com",
+					crossOrigin: "anonymous",
+				},
+				{ rel: "stylesheet", href: FONTS_CSS },
 				{ rel: "stylesheet", href: appCss },
 				{ rel: "canonical", href: `${SITE_URL}/` },
 				{ rel: "icon", href: "/favicon.ico", sizes: "16x16 32x32 48x48" },
@@ -94,7 +104,7 @@ function RootDocument() {
 	const lang = i18nInstance.language as SupportedLang;
 
 	return (
-		<html lang={lang} className="scroll-smooth">
+		<html lang={lang}>
 			<head>
 				<HeadContent />
 				{/* Données structurées, rendues côté serveur pour les crawlers. */}
@@ -106,9 +116,14 @@ function RootDocument() {
 					}}
 				/>
 			</head>
-			<body className="bg-[#5227FF]">
+			<body
+				className="bg-background text-foreground antialiased"
+				suppressHydrationWarning
+			>
 				<Navbar />
-				<Outlet />
+				<main id="main">
+					<Outlet />
+				</main>
 				<Footer />
 				<TanStackDevtools
 					config={{

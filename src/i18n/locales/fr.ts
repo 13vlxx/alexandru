@@ -1,4 +1,16 @@
 const fr = {
+	nav: {
+		about: "À propos",
+		projects: "Projets",
+		services: "Services",
+		contact: "Contact",
+		language: "Choisir la langue",
+		skip: "Aller au contenu",
+	},
+	not_found: {
+		title: "Page introuvable.",
+		cta: "Retour à l'accueil",
+	},
 	hero: {
 		subtitle: "Architecte Logiciel & Développeur",
 		description:
@@ -25,17 +37,24 @@ const fr = {
 		connect_label: "Contact",
 		currently_label: "En ce moment",
 		currently_text:
-			"Construction de ce portfolio & exploration de nouvelles approches frontend.",
+			"Je termine mon master Architecte Logiciel, j'apprends Neovim et je suis à la recherche de nouveaux projets.",
 	},
 	projects: {
 		section_label: "02 / Projets",
 		heading_1: "Projets",
 		heading_2: "choisis.",
+		visit: "Voir le site",
+		internal: "Outil interne",
 		items: {
 			oreus: {
 				role: "Développeur Backend",
 				description:
 					"Plateforme propulsée par l'IA, conçue pour automatiser et scaler des workflows intelligents. Conception et maintenance de l'infrastructure backend, des APIs et des pipelines de données qui alimentent le produit principal.",
+			},
+			raissa: {
+				role: "Full Stack",
+				description:
+					"Site vitrine d'un institut de beauté à Marignane — carte des soins à onglets, avis clients et réservation via Planity, installable en PWA. Direction éditoriale blanc et or, à l'image de l'univers soigné de la marque.",
 			},
 			airbus: {
 				role: "Full Stack",
